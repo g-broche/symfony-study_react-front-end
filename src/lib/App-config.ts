@@ -1,0 +1,1 @@
+export const mediaSrc = "../assets/product-images/";

@@ -1,5 +1,6 @@
-
-import ProductIndex from './templates/ProductIndex';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import ProductList from './components/ProductList';
+// import ProductDetails from './components/ProductDetails';
 
 import './App.css'
 
@@ -7,7 +8,16 @@ function App() {
 
   return (
     <>
-      <ProductIndex />
+      <BrowserRouter>
+        <main>
+          <Routes>
+            <Route path="products">
+              <Route path="" element={<ProductList />} />
+              {/* <Route path=":productId" element={<ProductDetails />} /> */}
+            </Route>
+          </Routes>
+        </main>
+      </BrowserRouter>
     </>
   )
 }

@@ -1,8 +1,8 @@
-import '../../App.css';
+import '../css/product-list.css';
 import ProductCard from './ProductCard';
-import { FetchResponseHandler, ApiProduct } from '../../interfaces/model'
-import { Products } from '../../classes/Products'
-import { ENDPOINTS } from '../../lib/Api';
+import { FetchResponseHandler, ApiProduct } from '../interfaces/model'
+import { Products } from '../classes/Products'
+import { ENDPOINTS } from '../lib/Api-config';
 import axios from "axios";
 import { useEffect, useState } from 'react';
 
