@@ -1,11 +1,12 @@
 import '../css/product-list.css';
 import ProductCard from './ProductCard';
-import { FetchResponseHandler, ApiProduct } from '../interfaces/model'
+import { FetchResponseHandler, ApiProduct, AppProduct } from '../interfaces/model'
 import { Products } from '../classes/Products'
 import { ENDPOINTS } from '../lib/Api-config';
 import axios from "axios";
 import { useEffect, useState } from 'react';
-
+// import { useAppDispatch, useAppSelector } from '../app/hooks';
+// import { storeProducts, clearProductStore } from '../features/products/productsSlice';
 
 
 async function fetchProducts(): Promise<FetchResponseHandler> {
@@ -20,22 +21,26 @@ async function fetchProducts(): Promise<FetchResponseHandler> {
         })
 }
 
-function productParser(fetchedProducts: ApiProduct[]): Products[] | null {
+function convertToAppProductFormat(fetchedProduct: ApiProduct): AppProduct {
+    return {
+        id: fetchedProduct.id,
+        name: fetchedProduct.name_product,
+        description: fetchedProduct.description_product,
+        price: fetchedProduct.price_product,
+        availability: fetchedProduct.availability_product,
+        imageSource: fetchedProduct.image_product,
+        reference: fetchedProduct.reference,
+        category: fetchedProduct.category,
+        distributors: fetchedProduct.distributors,
+        seller: fetchedProduct.seller_name,
+    }
+}
+
+function productsParser(fetchedProducts: ApiProduct[]): Products[] | null {
     if (fetchedProducts) {
         const parsedData = [] as Products[]
         fetchedProducts.forEach(fetchedProduct => {
-            const currentProduct = new Products(
-                fetchedProduct.id,
-                fetchedProduct.name_product,
-                fetchedProduct.description_product,
-                fetchedProduct.price_product,
-                fetchedProduct.availability_product,
-                fetchedProduct.image_product,
-                fetchedProduct.reference,
-                fetchedProduct.category,
-                fetchedProduct.distributors,
-                fetchedProduct.seller_name,
-            )
+            const currentProduct = convertToAppProductFormat(fetchedProduct)
             parsedData.push(currentProduct)
         });
         return parsedData
@@ -44,22 +49,22 @@ function productParser(fetchedProducts: ApiProduct[]): Products[] | null {
     }
 }
 
-function ProductList() {
+export default function ProductList() {
     const [productsData, setProductsData] = useState<Products[] | null>(null);
     const [Message, setMessage] = useState<string | null>(null);
 
     useEffect(() => {
         fetchProducts().then((fetchResult) => {
             if (fetchResult.success) {
-                setProductsData(productParser(fetchResult.data as ApiProduct[]))
+                const fetchedProducts = productsParser(fetchResult.data as ApiProduct[])
                 setMessage(null)
+                setProductsData(fetchedProducts)
             } else {
                 setProductsData(null)
                 setMessage(fetchResult.message)
             }
         });
     }, [])
-
     if (productsData) {
         return (
             <section id="product-list-display">
@@ -79,5 +84,7 @@ function ProductList() {
     }
 }
 
-export default ProductList
+
+
+
 

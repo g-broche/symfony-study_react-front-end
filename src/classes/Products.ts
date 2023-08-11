@@ -1,4 +1,6 @@
-export class Products {
+import { AppProduct } from "../interfaces/model";
+
+export class Products implements AppProduct {
     id: number;
     name: string;
     description: string;
@@ -10,16 +12,16 @@ export class Products {
     distributors: string[];
     seller: string;
 
-    constructor(id: number, name: string, desc: string, price: number, avail: boolean, img: string, ref: string, cat: string, dist: string[], seller: string) {
-        this.id = id;
-        this.name = name;
-        this.description = desc;
-        this.price = price;
-        this.availability = avail;
-        this.imageSource = img;
-        this.reference = ref;
-        this.category = cat;
-        this.distributors = dist;
-        this.seller = seller;
+    constructor(source: AppProduct) {
+        this.id = source.id;
+        this.name = source.name;
+        this.description = source.description;
+        this.price = source.price;
+        this.availability = source.availability;
+        this.imageSource = source.imageSource;
+        this.reference = source.reference;
+        this.category = source.category;
+        this.distributors = source.distributors;
+        this.seller = source.seller;
     }
 }
